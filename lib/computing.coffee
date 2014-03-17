@@ -10,6 +10,8 @@ class @Computing extends Connection
         '/api/v1/computing'
 
     list_instances: ->
+        ### Fetch all user instances ###
+        
         resp = []
         def = deferred()
         self = this
@@ -24,6 +26,8 @@ class @Computing extends Connection
         return def.promise
 
     get_instance: (uuid) ->
+        ### Fetch single instance by uuid ###
+
         def = deferred()
         self = this
 
@@ -36,6 +40,8 @@ class @Computing extends Connection
         return def.promise
 
     create_instance: (hostname, size, image_uuid, networks, ssh_key=null) ->
+        ### Create new Tiktalik Instance ###
+
         def = deferred()
         self = this
 
