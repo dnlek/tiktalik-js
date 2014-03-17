@@ -23,11 +23,11 @@ class @Computing extends Connection
 
         return def.promise
 
-    get_instance: (id) ->
+    get_instance: (uuid) ->
         def = deferred()
         self = this
 
-        @request('GET', "/instance/#{ id }").done((response) -> 
+        @request('GET', "/instance/#{ uuid }").done((response) -> 
             console.log('got instance');
             resp = new Instance(response.body, self)
             def.resolve(resp)
