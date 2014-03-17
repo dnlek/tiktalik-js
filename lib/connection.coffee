@@ -9,7 +9,6 @@ crypto = require('crypto')
 deferred = require('deferred')
 
 class @Connection
-    timeout: 5
 
     constructor: (@api_key, api_secret, @host="https://tiktalik.com") ->
         @api_secret_buff = new Buffer(api_secret, 'base64')
@@ -63,12 +62,10 @@ class @Connection
         # follow possible redirects
         # req.followAllRedirects(true)
 
-        console.log("REQUEST #{ method }: #{ @host }#{ url }")
         req.as.json((response) ->
             if response.status == 200
                 def.resolve(response)
             else
-                console.log('response', response.error, response.body)
                 def.reject(new Error("Error"))
         )
 
