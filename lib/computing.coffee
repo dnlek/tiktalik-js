@@ -11,7 +11,7 @@ class @Computing extends Connection
 
     list_instances: ->
         ### Fetch all user instances ###
-        
+
         resp = []
         def = deferred()
         self = this
@@ -32,7 +32,6 @@ class @Computing extends Connection
         self = this
 
         @request('GET', "/instance/#{ uuid }").done((response) -> 
-            console.log('got instance');
             resp = new Instance(response.body, self)
             def.resolve(resp)
         )
@@ -59,3 +58,31 @@ class @Computing extends Connection
 
         return def.promise               
 
+
+    list_networks: () ->
+        ### List available networks ###
+
+        def = deferred()
+        resp = []
+
+        @request('GET', "/network").done((response) -> 
+            for network in response.body
+                resp.push(new Network(network))
+
+            def.resolve(resp)
+        )
+
+        return def.promise
+
+    get_network: (uuid) ->
+        ### Fetch single network by uuid ###
+
+        def = deferred()
+        self = this
+
+        @request('GET', "/network/#{ uuid }").done((response) -> 
+            resp = new Network(response.body, self)
+            def.resolve(resp)
+        )
+
+        return def.promise
