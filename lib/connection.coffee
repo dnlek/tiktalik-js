@@ -17,7 +17,7 @@ class @Connection
         null
 
     canonical_string: (method, path, headers) ->
-        [
+        return [
             method,
             if headers['content-md5'] then headers['content-md5'] else '',
             if headers['content-type'] then headers['content-type'] else '',
@@ -40,27 +40,29 @@ class @Connection
 
         return headers
 
+    params_checksum: (body) ->
+        return crypto.createHash('md5').update(body).digest('hex')
+
     request: (method='GET', path='', params=null, query_params=null, headers={}) ->
         def = deferred()
 
         url = @base_url() + path
-        headers = @add_auth_header(method, url, headers)
 
         req = unirest(method, @host + url)
 
-        # if params
-        #     console.log('params?')
-        #     req.form(params)
+        if params
+            body = querystring.stringify(params)
+            headers['content-md5'] = @params_checksum(body)
+            headers['content-type'] = 'application/x-www-form-urlencoded'
+            req.send(body)
 
-        # if query_params
-        #     console.log('query_params?')
-        #     req.query(query_params)
+        if query_params
+            req.query(query_params)
+
+        headers = @add_auth_header(method, url, headers)
 
         # set headers
         req.headers(headers)
-
-        # follow possible redirects
-        # req.followAllRedirects(true)
 
         req.as.json((response) ->
             if response.status == 200
