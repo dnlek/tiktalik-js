@@ -33,5 +33,23 @@ class @Computing extends Connection
             def.resolve(resp)
         )
 
-        return def.promise        
+        return def.promise
+
+    create_instance: (hostname, size, image_uuid, networks, ssh_key=null) ->
+        def = deferred()
+        self = this
+
+        params = {
+            'hostname': hostname,
+            'size': size,
+            'image_uuid': image_uuid,
+            'networks[]': networks
+        }
+
+        @request('POST', "/instance", params).done((response) -> 
+            resp = new Instance(response.body, self)
+            def.resolve(resp)
+        )
+
+        return def.promise               
 
