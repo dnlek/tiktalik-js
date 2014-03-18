@@ -67,7 +67,7 @@ class @Computing extends Connection
 
         @request('GET', "/network").done((response) -> 
             for network in response.body
-                resp.push(new Network(network))
+                resp.push(new Network(network, self))
 
             def.resolve(resp)
         )
