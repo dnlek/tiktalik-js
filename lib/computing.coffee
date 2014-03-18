@@ -14,11 +14,10 @@ class @Computing extends Connection
 
         resp = []
         def = deferred()
-        self = this
 
-        @request('GET', '/instance').done((response) -> 
+        @request('GET', '/instance').done((response) => 
             for instance in response.body
-                resp.push(new Instance(instance, self))
+                resp.push(new Instance(instance, this))
 
             def.resolve(resp)
         )
@@ -29,10 +28,9 @@ class @Computing extends Connection
         ### Fetch single instance by uuid ###
 
         def = deferred()
-        self = this
 
-        @request('GET', "/instance/#{ uuid }").done((response) -> 
-            resp = new Instance(response.body, self)
+        @request('GET', "/instance/#{ uuid }").done((response) => 
+            resp = new Instance(response.body, this)
             def.resolve(resp)
         )
 
@@ -42,7 +40,6 @@ class @Computing extends Connection
         ### Create new Tiktalik Instance ###
 
         def = deferred()
-        self = this
 
         params = {
             'hostname': hostname,
@@ -51,8 +48,8 @@ class @Computing extends Connection
             'networks[]': networks
         }
 
-        @request('POST', "/instance", params).done((response) -> 
-            resp = new Instance(response.body, self)
+        @request('POST', "/instance", params).done((response) => 
+            resp = new Instance(response.body, this)
             def.resolve(resp)
         )
 
@@ -65,9 +62,9 @@ class @Computing extends Connection
         def = deferred()
         resp = []
 
-        @request('GET', "/network").done((response) -> 
+        @request('GET', "/network").done((response) => 
             for network in response.body
-                resp.push(new Network(network, self))
+                resp.push(new Network(network, this))
 
             def.resolve(resp)
         )
@@ -80,8 +77,8 @@ class @Computing extends Connection
         def = deferred()
         self = this
 
-        @request('GET', "/network/#{ uuid }").done((response) -> 
-            resp = new Network(response.body, self)
+        @request('GET', "/network/#{ uuid }").done((response) => 
+            resp = new Network(response.body, this)
             def.resolve(resp)
         )
 
