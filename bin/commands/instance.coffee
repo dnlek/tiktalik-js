@@ -17,14 +17,14 @@ class @InstanceCmd
         stop_instance = inst_subparsers.addParser('stop', {addHelp: true})
         stop_instance.addArgument(['uuid'])
 
-        stop_instance = inst_subparsers.addParser('start', {addHelp: true})
-        stop_instance.addArgument(['uuid'])
+        start_instance = inst_subparsers.addParser('start', {addHelp: true})
+        start_instance.addArgument(['uuid'])
 
-        stop_instance = inst_subparsers.addParser('forcestop', {addHelp: true})
-        stop_instance.addArgument(['uuid'])
+        forcestop_instance = inst_subparsers.addParser('forcestop', {addHelp: true})
+        forcestop_instance.addArgument(['uuid'])
 
-        stop_instance = inst_subparsers.addParser('backup', {addHelp: true})
-        stop_instance.addArgument(['uuid'])
+        backup_instance = inst_subparsers.addParser('backup', {addHelp: true})
+        backup_instance.addArgument(['uuid'])
     
     @list: (key, secret, args) ->
         conn = new Computing(key, secret)
