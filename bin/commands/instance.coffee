@@ -1,6 +1,6 @@
 {Computing} = require('../../lib/computing')
 
-class @InstanceCmd
+class @CmdHandler
 
     @get_parsers: (subparsers) ->
         instance = subparsers.addParser('instance', {addHelp: true})
