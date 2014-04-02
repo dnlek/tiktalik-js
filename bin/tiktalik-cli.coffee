@@ -24,5 +24,7 @@ for cmd in cmds
 args = parser.parseArgs();
 console.dir(args);
 
+key = process.env.TIKTALIK_KEY
+secret = process.env.TIKTALIK_SECRET
 
 commands[args.group][args.subgroup](key, secret, args)
