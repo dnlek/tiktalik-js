@@ -8,6 +8,22 @@ parser = new ArgumentParser({
   description: 'Tiktalik CLI',
 })
 
+parser.addArgument(
+    ['-k', '--key'],
+    {
+        action: 'store',
+        help: 'Set Tiktalik API key'
+    }
+)
+
+parser.addArgument(
+    ['-s', '--secret'],
+    {
+        action: 'store',
+        help: 'Set Tiktalik API secret'
+    }
+)
+
 subparsers = parser.addSubparsers({
   title:'Tiktalik Instances',
   dest:'group'
@@ -24,7 +40,14 @@ for cmd in cmds
 args = parser.parseArgs();
 console.dir(args);
 
-key = process.env.TIKTALIK_KEY
-secret = process.env.TIKTALIK_SECRET
+if args.key != null
+    key = args.key
+else
+    key = process.env.TIKTALIK_KEY
+
+if args.secret != null
+    secret = args.secret
+else
+    secret = process.env.TIKTALIK_SECRET
 
 commands[args.group][args.subgroup](key, secret, args)
