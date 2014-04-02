@@ -13,20 +13,16 @@ subparsers = parser.addSubparsers({
   dest:'group'
 })
 
+cmds = ['instance']
 commands = {}
 
-
-{InstanceCmd} = require('./commands/instance')
-InstanceCmd.get_parsers(subparsers)
-commands['instance'] = InstanceCmd
+for cmd in cmds
+    {CmdHandler} = require("./commands/#{ cmd }")
+    CmdHandler.get_parsers(subparsers)
+    commands[cmd] = CmdHandler
 
 args = parser.parseArgs();
 console.dir(args);
 
-key = 'cOaszKCTQJYUsAISCXcjMpqddBXVKJoY'
-secret = '6ayKSKRMmVQ52pm7w67rmBqTl9I2YiruW3r73BP4vfaG5Ff17pPEku+yoOA4mV9SWahQImH6kXpxUuBcNMZw/A=='
 
-console.log('command group', args.group)
-console.log('subgroup', args.subgroup)
-console.log('command', commands[args.group])
 commands[args.group][args.subgroup](key, secret, args)
