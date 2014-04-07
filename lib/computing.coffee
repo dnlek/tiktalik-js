@@ -11,30 +11,11 @@ class @Computing extends Connection
 
     list_instances: ->
         ### Fetch all user instances ###
-
-        resp = []
-        def = deferred()
-
-        @request('GET', '/instance').done((response) => 
-            for instance in response.body
-                resp.push(new Instance(instance, this))
-
-            def.resolve(resp)
-        )
-
-        return def.promise
+        return @list('GET', '/instance', Instance)
 
     get_instance: (uuid) ->
         ### Fetch single instance by uuid ###
-
-        def = deferred()
-
-        @request('GET', "/instance/#{ uuid }").done((response) => 
-            resp = new Instance(response.body, this)
-            def.resolve(resp)
-        )
-
-        return def.promise
+        return @get_by_uuid('GET', '/instance', Instance, uuid)
 
     create_instance: (hostname, size, image_uuid, networks, ssh_key=null) ->
         ### Create new Tiktalik Instance ###
@@ -58,28 +39,16 @@ class @Computing extends Connection
 
     list_networks: () ->
         ### List available networks ###
-
-        def = deferred()
-        resp = []
-
-        @request('GET', "/network").done((response) => 
-            for network in response.body
-                resp.push(new Network(network, this))
-
-            def.resolve(resp)
-        )
-
-        return def.promise
+        return @list('GET', '/network', Network)
 
     get_network: (uuid) ->
         ### Fetch single network by uuid ###
+        return @get_by_uuid('GET', '/network', Network, uuid)
 
-        def = deferred()
-        self = this
+    list_images: () ->
+        ### List available images ###
+        return @list('GET', '/image', Image)
 
-        @request('GET', "/network/#{ uuid }").done((response) => 
-            resp = new Network(response.body, this)
-            def.resolve(resp)
-        )
-
-        return def.promise
+    get_image: (uuid) ->
+        ### Get single image by uuid ###
+        return @get_by_uuid('GET', '/image', Image, uuid)
