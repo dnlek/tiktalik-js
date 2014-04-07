@@ -38,7 +38,6 @@ class @Computing extends Connection
 
         return def.promise               
 
-
     list_networks: () ->
         ### List available networks ###
         return @list('GET', '/network', Network)
