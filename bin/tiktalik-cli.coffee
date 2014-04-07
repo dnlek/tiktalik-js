@@ -29,7 +29,11 @@ subparsers = parser.addSubparsers({
   dest:'group'
 })
 
-cmds = ['instance']
+# fs = require('fs')
+# dirs = fs.readdirSync('./commands')
+# console.log('dirs', dirs)
+
+cmds = ['instance', 'image']
 commands = {}
 
 for cmd in cmds
