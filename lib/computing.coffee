@@ -2,6 +2,8 @@
 
 {Connection} = require('./connection')
 {Instance} = require('./instance')
+{Image} = require('./image')
+{Network} = require('./network')
 deferred = require('deferred')
 
 class @Computing extends Connection
