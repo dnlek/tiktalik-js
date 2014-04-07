@@ -33,7 +33,7 @@ subparsers = parser.addSubparsers({
 # dirs = fs.readdirSync('./commands')
 # console.log('dirs', dirs)
 
-cmds = ['instance', 'image']
+cmds = ['instance', 'image', 'network']
 commands = {}
 
 for cmd in cmds
