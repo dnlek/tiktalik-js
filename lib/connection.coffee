@@ -43,6 +43,33 @@ class @Connection
     params_checksum: (body) ->
         return crypto.createHash('md5').update(body).digest('hex')
 
+    list: (method, path, Cls) ->
+        ### Meta list function ###
+        def = deferred()
+        resp = []
+
+        @request(method, path).done((response) => 
+            for obj_data in response.body
+                resp.push(new Cls(obj_data, this))
+
+            def.resolve(resp)
+        )
+
+        return def.promise
+
+    get_by_uuid: (method, path, Cls, uuid) ->
+        ### Fetch single network by uuid ###
+
+        def = deferred()
+        self = this
+
+        @request(method, "#{ path }/#{ uuid }").done((response) => 
+            resp = new Cls(response.body, this)
+            def.resolve(resp)
+        )
+
+        return def.promise
+
     request: (method='GET', path='', params=null, query_params=null, headers={}) ->
         def = deferred()
 
