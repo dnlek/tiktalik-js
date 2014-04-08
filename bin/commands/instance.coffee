@@ -30,7 +30,7 @@ class @CmdHandler
         conn = new Computing(key, secret)
         conn.list_instances().done((instances) ->
             for instance in instances
-                console.log(JSON.stringify(instance.data, null, 4))
+                console.log(instance.short())
         )
 
     @get: (key, secret, args) ->
