@@ -19,6 +19,25 @@ class @Computing extends Connection
         ### Fetch single instance by uuid ###
         return @get_by_uuid('GET', '/instance', Instance, uuid)
 
+    find_instances: (query) ->
+        ### Get one or more instances with simillar name or uuid ###
+        def = deferred()
+        ret = []
+        rx = new RegExp(query)
+        @list_instances().done((instances) ->
+            for instance in instances
+                if instance.get('uuid') == query
+                    def.resolve([instance])
+                    return
+
+                if instance.get('hostname').search(rx) >= 0
+                    ret.push(instance)
+
+            def.resolve(ret)
+        )
+
+        return def.promise
+
     create_instance: (hostname, size, image_uuid, networks, ssh_key=null) ->
         ### Create new Tiktalik Instance ###
 
