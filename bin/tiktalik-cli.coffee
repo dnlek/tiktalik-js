@@ -2,6 +2,9 @@
 'use strict';
 
 ArgumentParser = require('argparse').ArgumentParser;
+prompt = require('prompt')
+prompt.start()
+
 parser = new ArgumentParser({
   version: '0.0.1',
   addHelp:true,  
