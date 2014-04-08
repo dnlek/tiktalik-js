@@ -6,6 +6,22 @@ class @Instance
 
     constructor: (@data, @connection) ->
 
+    get: (name) ->
+        return @data[name]
+
+    is_running: () ->
+        return @data.state == 12 && @data.running == true
+
+    ips: () ->
+        ret = []
+        for iface in @data.interfaces
+            ret.push(iface.ip)
+
+        return ret
+
+    short: () ->
+        return "#{ @data.hostname } (ip: #{ @ips().join(', ') }, running: #{ @is_running() }, uuid: #{ @data.uuid })"
+
     stop: () ->
         ### Stops instance (using acpi) ###
         @connection.request('POST', "/instance/#{ @data.uuid }/stop")
