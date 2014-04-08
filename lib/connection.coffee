@@ -33,7 +33,6 @@ class @Connection
         headers.date = date.toUTCString()
 
         canonical_string = @canonical_string(method, path, headers)
-        console.log('canonical_string', canonical_string)
         sign_string = @sign_string(canonical_string)
 
         headers.Authorization = "TKAuth #{ @api_key }:#{ sign_string }"
