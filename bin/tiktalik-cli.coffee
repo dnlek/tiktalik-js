@@ -42,7 +42,6 @@ for cmd in cmds
     commands[cmd] = CmdHandler
 
 args = parser.parseArgs();
-console.dir(args);
 
 if args.key != null
     key = args.key
