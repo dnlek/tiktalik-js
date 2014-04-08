@@ -11,8 +11,8 @@ class @CmdHandler
         })
         list_instance = inst_subparsers.addParser('list', {addHelp: true})
 
-        get_instance = inst_subparsers.addParser('get', {addHelp: true})
-        get_instance.addArgument(['uuid'])
+        get_instance = inst_subparsers.addParser('info', {addHelp: true})
+        get_instance.addArgument(['query'])
 
         stop_instance = inst_subparsers.addParser('stop', {addHelp: true})
         stop_instance.addArgument(['uuid'])
@@ -33,10 +33,13 @@ class @CmdHandler
                 console.log(instance.short())
         )
 
-    @get: (key, secret, args) ->
+    @info: (key, secret, args) ->
         conn = new Computing(key, secret)
-        conn.get_instance(args.uuid).done((instance) ->
-            console.log(JSON.stringify(instance.data, null, 4))
+        conn.find_instances(args.query).done((instances) ->
+            if instances.length == 1
+                console.log(JSON.stringify(instances[0].data, null, 4))
+            else
+                console.log("Found more then one instance (#{ instances.length })")
         )        
 
     @stop: (key, secret, args) ->
