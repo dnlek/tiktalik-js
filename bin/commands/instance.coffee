@@ -55,7 +55,7 @@ class @CmdHandler extends Handler
     @info: (key, secret, args) ->
         @get_instance(key, secret, args.query).done((instance) ->
             console.log(JSON.stringify(instance.data, null, 4))
-        )      
+        )
 
     @stop: (key, secret, args) ->
         @get_instance(key, secret, args.query).done((instance) =>
@@ -90,8 +90,12 @@ class @CmdHandler extends Handler
 
     @create: (key, secret, args) ->
         conn = new Computing(key, secret)
-        console.log(args)
 
-        # conn.create_instance(args.hostname, args.size, args.image, [args.network], args.ssh_key).done((instance) ->
+        image_def = @get_image(key, secret, args.image)
 
-        # )
+        deferred(image_def)((result) =>
+            conn.create_instance(args.hostname, args.size, result.get('uuid'), [args.network], args.ssh_key).done((instance) ->
+                console.log('Instance created')
+            )
+        )
+
