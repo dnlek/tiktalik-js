@@ -5,3 +5,6 @@ class @Image
     ###
 
     constructor: (@data, @connection) ->
+
+    get: (name) ->
+        return @data[name]
