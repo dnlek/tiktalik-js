@@ -1,3 +1,4 @@
+deferred = require('deferred')
 
 class @Instance
     ### VPS instance representation
@@ -11,6 +12,9 @@ class @Instance
 
     is_running: () ->
         return @data.state == 12 && @data.running == true
+
+    is_waiting: () ->
+        return @data.actions_pending_count > 0
 
     ips: () ->
         ret = []
@@ -64,6 +68,37 @@ class @Instance
 
         @connection.request('DELETE', "/instance/#{ @data.uuid }/interface#{ net_iface_uuid }")
 
+    update: (instance) ->
+        @data = instance.data
+
+    wait_until_done: () ->
+        ### Wait for current operation on instance ###
+        def = deferred()
+        @__wait_until_done(def)
+        return def.promise
+
+    fetch: () ->
+        ### Fetches instance data ###
+        def = deferred()
+        @connection.get_instance(@data.uuid).done((instance) =>
+            @update(instance)
+            def.resolve(this)
+        )
+
+        return def.promise
+
     @get_by_uuid: (connection, uuid) ->
         ### Fetch single instance by UUID ###
         connection.get_instance(uuid)
+
+    __wait_until_done: (def) ->
+        ### Fetch instance, check state - repeat ###
+        @fetch().done((instance) =>
+            if @is_waiting()
+                setTimeout(() =>
+                    def.promise.emit('progress');
+                    @wait_until_done(def);
+                , 2 * 1000)
+            else
+                def.resolve(instance)
+        )
