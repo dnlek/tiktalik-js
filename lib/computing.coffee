@@ -47,7 +47,7 @@ class @Computing extends Connection
             'hostname': hostname,
             'size': size,
             'image_uuid': image_uuid,
-            'networks[]': networks
+            'networks': networks
         }
 
         @request('POST', "/instance", params).done((response) => 
