@@ -72,3 +72,22 @@ class @Computing extends Connection
     get_image: (uuid) ->
         ### Get single image by uuid ###
         return @get_by_uuid('GET', '/image', Image, uuid)
+
+    find_images: (query) ->
+        ### Get one or more images with simillar name or uuid ###
+        def = deferred()
+        ret = []
+        rx = new RegExp(query)
+        @list_images().done((images) ->
+            for image in images
+                if image.get('uuid') == query
+                    def.resolve([image])
+                    return
+
+                if image.get('name').search(rx) >= 0
+                    ret.push(image)
+
+            def.resolve(ret)
+        )
+
+        return def.promise
