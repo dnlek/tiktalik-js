@@ -1,8 +1,9 @@
 {Computing} = require('../../lib/computing')
+{Handler} = require('./handler')
 prompt = require('prompt')
 deferred = require('deferred')
 
-class @CmdHandler
+class @CmdHandler extends Handler
 
     @get_parsers: (subparsers) ->
         image = subparsers.addParser('image', {addHelp: true})
@@ -15,28 +16,6 @@ class @CmdHandler
 
         get_image = subparsers.addParser('info', {addHelp: true})
         get_image.addArgument(['query'])
-
-    @get_image: (key, secret, query) ->
-        def = deferred()
-        conn = new Computing(key, secret)
-        conn.find_images(query).done((images) ->
-            if images.length == 1
-                def.resolve(images[0])
-            else if images.length > 1
-                i = 0
-                console.log("Found more then one image (#{ images.length })")
-                for image in images
-                    console.log("#{ i++ }) #{ image.get('name') } (#{ image.get('uuid') })")
-
-                prompt.get(['number'], (err, result) ->
-                    def.resolve(images[result.number])
-                )
-            else
-                console.log("Image not found")
-                def.reject(new Error("Image not found"))
-        )
-
-        return def.promise
 
     @list: (key, secret, args) ->
         conn = new Computing(key, secret)
