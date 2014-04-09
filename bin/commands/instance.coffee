@@ -48,7 +48,7 @@ class @CmdHandler
         conn.find_instances(query).done((instances) ->
             if instances.length == 1
                 def.resolve(instances[0])
-            else
+            else if instances.length > 1
                 i = 0
                 console.log("Found more then one instance (#{ instances.length })")
                 for instance in instances
@@ -57,9 +57,21 @@ class @CmdHandler
                 prompt.get(['number'], (err, result) ->
                     def.resolve(instances[result.number])
                 )
+            else
+                console.log("Instance not found")
+                def.reject(new Error("Instance not found"))
         )
 
         return def.promise
+
+    @std_wait_until_done: (instance) ->
+        def = instance.wait_until_done()
+        def.on('progress', () ->
+            process.stdout.write('.')
+        )
+        def.done((instance) =>
+            process.stdout.write('done\n')
+        )
 
     @info: (key, secret, args) ->
         @get_instance(key, secret, args.query).done((instance) ->
@@ -67,29 +79,33 @@ class @CmdHandler
         )      
 
     @stop: (key, secret, args) ->
-        @get_instance(key, secret, args.query).done((instance) ->
-            instance.stop().done(() ->
-                console.log("Operation Stop in progress")
+        @get_instance(key, secret, args.query).done((instance) =>
+            instance.stop().done(() =>
+                process.stdout.write("Operation Stop in progress")
+                @std_wait_until_done(instance)
             )
         )
 
     @forcestop: (key, secret, args) ->
-        @get_instance(key, secret, args.query).done((instance) ->
+        @get_instance(key, secret, args.query).done((instance) =>
             instance.force_stop().done(() ->
-                console.log("Operation Force Stop in progress")
+                process.stdout.write("Operation Force Stop in progress")
+                @std_wait_until_done(instance)
             )
         )
     @start: (key, secret, args) ->
-        @get_instance(key, secret, args.query).done((instance) ->
-            instance.start().done(() ->
-                console.log("Operation Start in progress")
+        @get_instance(key, secret, args.query).done((instance) =>
+            instance.start().done(() =>
+                process.stdout.write("Operation Start in progress")
+                @std_wait_until_done(instance)
             )
         )
 
     @backup: (key, secret, args) ->
-        @get_instance(key, secret, args.query).done((instance) ->
+        @get_instance(key, secret, args.query).done((instance) =>
             instance.backup().done(() ->
-                console.log("Operation Backup in progress")
+                process.stdout.write("Operation Backup in progress")
+                @std_wait_until_done(instance)
             )
         )
 
