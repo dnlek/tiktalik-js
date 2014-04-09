@@ -1,8 +1,9 @@
 {Computing} = require('../../lib/computing')
+{Handler} = require('./handler')
 prompt = require('prompt')
 deferred = require('deferred')
 
-class @CmdHandler
+class @CmdHandler extends Handler
 
     @get_parsers: (subparsers) ->
         instance = subparsers.addParser('instance', {addHelp: true})
@@ -41,28 +42,6 @@ class @CmdHandler
             for instance in instances
                 console.log(instance.short())
         )
-
-    @get_instance: (key, secret, query) ->
-        def = deferred()
-        conn = new Computing(key, secret)
-        conn.find_instances(query).done((instances) ->
-            if instances.length == 1
-                def.resolve(instances[0])
-            else if instances.length > 1
-                i = 0
-                console.log("Found more then one instance (#{ instances.length })")
-                for instance in instances
-                    console.log("#{ i++ }) #{ instance.get('hostname') } (#{ instance.get('uuid') })")
-
-                prompt.get(['number'], (err, result) ->
-                    def.resolve(instances[result.number])
-                )
-            else
-                console.log("Instance not found")
-                def.reject(new Error("Instance not found"))
-        )
-
-        return def.promise
 
     @std_wait_until_done: (instance) ->
         def = instance.wait_until_done()
