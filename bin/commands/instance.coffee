@@ -31,9 +31,15 @@ class @CmdHandler extends Handler
 
         create_instance = inst_subparsers.addParser('create', {addHelp: true})
         create_instance.addArgument(['hostname'])
-        create_instance.addArgument(['-s', '--size'])
-        create_instance.addArgument(['-i', '--image'])
-        create_instance.addArgument(['-n', '--network'])
+        create_instance.addArgument(['-s', '--size'], {
+            nargs: 1
+        })
+        create_instance.addArgument(['-i', '--image'], {
+            nargs: 1
+        })
+        create_instance.addArgument(['-n', '--network'], {
+            nargs: '*'
+        })
         create_instance.addArgument(['--ssh_key'])
     
     @list: (key, secret, args) ->
@@ -88,13 +94,28 @@ class @CmdHandler extends Handler
             )
         )
 
+
     @create: (key, secret, args) ->
         conn = new Computing(key, secret)
 
-        image_def = @get_image(key, secret, args.image)
+        defs = []
+        defs.push(@get_image(key, secret, args.image))
 
-        deferred(image_def)((result) =>
-            conn.create_instance(args.hostname, args.size, result.get('uuid'), [args.network], args.ssh_key).done((instance) ->
+        if args.network != null
+            for network in args.network
+                defs.push(@get_network(key, secret, network))
+
+        deferred.apply(null, defs)((results) =>
+            image = results[0]
+            if args.network != null
+                networks = results.slice(1, 1 + args.network.length)
+            else
+                networks = []
+
+            networks_uuids = networks.map((network) ->
+                return network.get('uuid')
+            )
+            conn.create_instance(args.hostname, args.size, image.get('uuid'), networks_uuids, args.ssh_key).done((instance) ->
                 console.log('Instance created')
             )
         )
