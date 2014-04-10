@@ -47,3 +47,25 @@ class @Handler
         )
 
         return def.promise
+
+    @get_network: (key, secret, query) ->
+        def = deferred()
+        conn = new Computing(key, secret)
+        conn.find_networks(query).done((networks) ->
+            if networks.length == 1
+                def.resolve(networks[0])
+            else if networks.length > 1
+                i = 0
+                console.log("Found more then one network (#{ networks.length })")
+                for network in networks
+                    console.log("#{ i++ }) #{ network.get('domainname') } (#{ network.get('uuid') })")
+
+                prompt.get(['number'], (err, result) ->
+                    def.resolve(networks[result.number])
+                )
+            else
+                console.log("Network not found")
+                def.reject(new Error("Network not found"))
+        )
+
+        return def.promise
