@@ -67,6 +67,25 @@ class @Computing extends Connection
         ### Fetch single network by uuid ###
         return @get_by_uuid('GET', '/network', Network, uuid)
 
+    find_networks: (query) ->
+        ### Get one or more images with simillar name or uuid ###
+        def = deferred()
+        ret = []
+        rx = new RegExp(query)
+        @list_networks().done((networks) ->
+            for network in networks
+                if network.get('uuid') == query
+                    def.resolve([network])
+                    return
+
+                if network.get('domainname') && network.get('domainname').search(rx) >= 0
+                    ret.push(network)
+
+            def.resolve(ret)
+        )
+
+        return def.promise
+
     list_images: () ->
         ### List available images ###
         return @list('GET', '/image', Image)
