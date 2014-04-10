@@ -46,9 +46,11 @@ class @Computing extends Connection
         params = {
             'hostname': hostname,
             'size': size,
-            'image_uuid': image_uuid,
-            'networks': networks
+            'image_uuid': image_uuid
         }
+
+        if networks
+            params['networks[]'] = networks
 
         @request('POST', "/instance", params).done((response) => 
             resp = new Instance(response.body, this)
