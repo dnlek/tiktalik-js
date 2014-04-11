@@ -97,7 +97,7 @@ class @Instance
             if @is_waiting()
                 setTimeout(() =>
                     def.promise.emit('progress');
-                    @wait_until_done(def);
+                    @__wait_until_done(def);
                 , 2 * 1000)
             else
                 def.resolve(instance)
