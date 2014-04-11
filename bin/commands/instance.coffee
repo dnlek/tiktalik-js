@@ -78,53 +78,29 @@ class @CmdHandler extends Handler
             console.log(JSON.stringify(instance.data, null, 4))
         )
 
-    @stop: (key, secret, args) ->
-        process.stdout.write("Operation Stop in progress.")
+    @instance_operation: (key, secret, operation_name, func, args) ->
+        process.stdout.write("Operation #{ operation_name } in progress.")
         @get_instance(key, secret, args.query).done((instance) =>
             process.stdout.write(".")
-            instance.stop().done(() =>
+            instance[func]().done(() =>
                 if args.wait
                     @std_wait_until_done(instance)
                 else
                     process.stdout.write("done (operation enqueued)\n")
             )
         )
+
+    @stop: (key, secret, args) ->
+        @instance_operation(key, secret, 'Stop', 'stop', args)
 
     @forcestop: (key, secret, args) ->
-        process.stdout.write("Operation Force Stop in progress")
-        @get_instance(key, secret, args.query).done((instance) =>
-            process.stdout.write(".")
-            instance.force_stop().done(() ->
-                if args.wait
-                    @std_wait_until_done(instance)
-                else
-                    process.stdout.write("done (operation enqueued)\n")
-            )
-        )
+        @instance_operation(key, secret, 'Force Stop', 'force_stop', args)
+
     @start: (key, secret, args) ->
-        process.stdout.write("Operation Start in progress")
-        @get_instance(key, secret, args.query).done((instance) =>
-            process.stdout.write(".")
-            instance.start().done(() =>
-                if args.wait
-                    @std_wait_until_done(instance)
-                else
-                    process.stdout.write("done (operation enqueued)\n")
-            )
-        )
+        @instance_operation(key, secret, 'Start', 'start', args)
 
     @backup: (key, secret, args) ->
-        process.stdout.write("Operation Backup in progress")
-        @get_instance(key, secret, args.query).done((instance) =>
-            process.stdout.write(".")
-            instance.backup().done(() ->
-                if args.wait
-                    @std_wait_until_done(instance)
-                else
-                    process.stdout.write("done (operation enqueued)\n")
-            )
-        )
-
+        @instance_operation(key, secret, 'Backup', 'backup', args)
 
     @create: (key, secret, args) ->
         conn = new Computing(key, secret)
