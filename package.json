@@ -24,7 +24,9 @@
     "moment": "^2.5.1",
     "deferred": "^0.6.8",
     "coffee-script": "^1.7.1",
-    "prompt": "^0.2.12"
+    "prompt": "^0.2.12",
+    "underscore.string": "^2.3.3",
+    "underscore": "^1.6.0"
   },
   "repository": {
     "type": "git",
