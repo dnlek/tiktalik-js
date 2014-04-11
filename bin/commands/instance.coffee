@@ -35,6 +35,12 @@ class @CmdHandler extends Handler
             action: 'storeTrue'
         })
 
+        restart_instance = inst_subparsers.addParser('restart', {addHelp: true})
+        restart_instance.addArgument(['query'])
+        restart_instance.addArgument(['-w', '--wait'], {
+            action: 'storeTrue'
+        })
+
         backup_instance = inst_subparsers.addParser('backup', {addHelp: true})
         backup_instance.addArgument(['query'])
         backup_instance.addArgument(['-w', '--wait'], {
@@ -98,6 +104,26 @@ class @CmdHandler extends Handler
 
     @start: (key, secret, args) ->
         @instance_operation(key, secret, 'Start', 'start', args)
+
+    @restart: (key, secret, args) ->
+        process.stdout.write("Operation Restart in progress.")
+        @get_instance(key, secret, args.query).done((instance) =>
+            process.stdout.write(".")
+            instance.force_stop().done(() =>
+                def = instance.wait_until_done()
+                def.on('progress', () ->
+                    process.stdout.write('.')
+                )
+                def.done((instance) =>
+                    instance.start().done(() =>
+                        if args.wait
+                            @std_wait_until_done(instance)
+                        else
+                            process.stdout.write("done (operation enqueued)\n")
+                    )
+                )
+            )
+        )
 
     @backup: (key, secret, args) ->
         @instance_operation(key, secret, 'Backup', 'backup', args)
