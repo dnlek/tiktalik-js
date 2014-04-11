@@ -19,15 +19,27 @@ class @CmdHandler extends Handler
 
         stop_instance = inst_subparsers.addParser('stop', {addHelp: true})
         stop_instance.addArgument(['query'])
+        stop_instance.addArgument(['-w', '--wait'], {
+            action: 'storeTrue'
+        })
 
         start_instance = inst_subparsers.addParser('start', {addHelp: true})
         start_instance.addArgument(['query'])
+        start_instance.addArgument(['-w', '--wait'], {
+            action: 'storeTrue'
+        })
 
         forcestop_instance = inst_subparsers.addParser('forcestop', {addHelp: true})
         forcestop_instance.addArgument(['query'])
+        forcestop_instance.addArgument(['-w', '--wait'], {
+            action: 'storeTrue'
+        })
 
         backup_instance = inst_subparsers.addParser('backup', {addHelp: true})
         backup_instance.addArgument(['query'])
+        backup_instance.addArgument(['-w', '--wait'], {
+            action: 'storeTrue'
+        })
 
         create_instance = inst_subparsers.addParser('create', {addHelp: true})
         create_instance.addArgument(['hostname'])
@@ -41,6 +53,9 @@ class @CmdHandler extends Handler
             nargs: '*'
         })
         create_instance.addArgument(['--ssh_key'])
+        create_instance.addArgument(['-w', '--wait'], {
+            action: 'storeTrue'
+        })
     
     @list: (key, secret, args) ->
         conn = new Computing(key, secret)
@@ -64,33 +79,49 @@ class @CmdHandler extends Handler
         )
 
     @stop: (key, secret, args) ->
+        process.stdout.write("Operation Stop in progress.")
         @get_instance(key, secret, args.query).done((instance) =>
+            process.stdout.write(".")
             instance.stop().done(() =>
-                process.stdout.write("Operation Stop in progress")
-                @std_wait_until_done(instance)
+                if args.wait
+                    @std_wait_until_done(instance)
+                else
+                    process.stdout.write("done (operation enqueued)\n")
             )
         )
 
     @forcestop: (key, secret, args) ->
+        process.stdout.write("Operation Force Stop in progress")
         @get_instance(key, secret, args.query).done((instance) =>
+            process.stdout.write(".")
             instance.force_stop().done(() ->
-                process.stdout.write("Operation Force Stop in progress")
-                @std_wait_until_done(instance)
+                if args.wait
+                    @std_wait_until_done(instance)
+                else
+                    process.stdout.write("done (operation enqueued)\n")
             )
         )
     @start: (key, secret, args) ->
+        process.stdout.write("Operation Start in progress")
         @get_instance(key, secret, args.query).done((instance) =>
+            process.stdout.write(".")
             instance.start().done(() =>
-                process.stdout.write("Operation Start in progress")
-                @std_wait_until_done(instance)
+                if args.wait
+                    @std_wait_until_done(instance)
+                else
+                    process.stdout.write("done (operation enqueued)\n")
             )
         )
 
     @backup: (key, secret, args) ->
+        process.stdout.write("Operation Backup in progress")
         @get_instance(key, secret, args.query).done((instance) =>
+            process.stdout.write(".")
             instance.backup().done(() ->
-                process.stdout.write("Operation Backup in progress")
-                @std_wait_until_done(instance)
+                if args.wait
+                    @std_wait_until_done(instance)
+                else
+                    process.stdout.write("done (operation enqueued)\n")
             )
         )
 
@@ -119,4 +150,3 @@ class @CmdHandler extends Handler
                 console.log('Instance created')
             )
         )
-
