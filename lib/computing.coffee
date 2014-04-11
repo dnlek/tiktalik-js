@@ -6,6 +6,10 @@
 {Network} = require('./network')
 deferred = require('deferred')
 
+_ = require('underscore')._
+_.str = require('underscore.string')
+_.mixin(_.str.exports())
+
 class @Computing extends Connection
 
     base_url: ->
@@ -26,7 +30,7 @@ class @Computing extends Connection
         rx = new RegExp(query)
         @list_instances().done((instances) ->
             for instance in instances
-                if instance.get('uuid') == query
+                if _(instance.get('uuid')).startsWith(query)
                     def.resolve([instance])
                     return
 
@@ -74,7 +78,7 @@ class @Computing extends Connection
         rx = new RegExp(query)
         @list_networks().done((networks) ->
             for network in networks
-                if network.get('uuid') == query
+                if _(network.get('uuid')).startsWith(query)
                     def.resolve([network])
                     return
 
@@ -101,7 +105,7 @@ class @Computing extends Connection
         rx = new RegExp(query)
         @list_images().done((images) ->
             for image in images
-                if image.get('uuid') == query
+                if _(image.get('uuid')).startsWith(query)
                     def.resolve([image])
                     return
 
