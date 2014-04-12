@@ -42,6 +42,19 @@ class @Instance
         ### Creates instance backup ###
         @connection.request('POST', "/instance/#{ @data.uuid }/backup")
 
+    restart: () ->
+        def = deferred()
+
+        @stop().done(() =>
+            @wait_until_done().done(() =>
+                @start().done(() =>
+                    def.resolve()
+                )
+            )
+        )
+
+        return def.promise
+
     get_interfaces: () ->
         ### List instance network interfaces ###
         @connection.request('GET', "/instance/#{ @data.uuid }/interface")
