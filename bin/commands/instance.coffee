@@ -85,8 +85,8 @@ class @CmdHandler extends Handler
         )
 
     @instance_operation: (key, secret, operation_name, func, args) ->
-        process.stdout.write("Operation #{ operation_name } in progress.")
         @get_instance(key, secret, args.query).done((instance) =>
+            process.stdout.write("Operation #{ operation_name } in progress.")
             process.stdout.write(".")
             instance[func]().done(() =>
                 if args.wait
