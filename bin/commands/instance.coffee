@@ -106,24 +106,7 @@ class @CmdHandler extends Handler
         @instance_operation(key, secret, 'Start', 'start', args)
 
     @restart: (key, secret, args) ->
-        process.stdout.write("Operation Restart in progress.")
-        @get_instance(key, secret, args.query).done((instance) =>
-            process.stdout.write(".")
-            instance.force_stop().done(() =>
-                def = instance.wait_until_done()
-                def.on('progress', () ->
-                    process.stdout.write('.')
-                )
-                def.done((instance) =>
-                    instance.start().done(() =>
-                        if args.wait
-                            @std_wait_until_done(instance)
-                        else
-                            process.stdout.write("done (operation enqueued)\n")
-                    )
-                )
-            )
-        )
+        @instance_operation(key, secret, 'Restart', 'restart', args)
 
     @backup: (key, secret, args) ->
         @instance_operation(key, secret, 'Backup', 'backup', args)
