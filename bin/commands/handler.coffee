@@ -2,6 +2,15 @@
 prompt = require('prompt')
 deferred = require('deferred')
 
+number_schema = {
+    properties: {
+        number: {
+            pattern: /^[0-9]+$/,
+            required: true
+        }
+    }
+}
+
 class @Handler
 
     @get_instance: (key, secret, query) ->
@@ -16,7 +25,7 @@ class @Handler
                 for instance in instances
                     console.log("#{ i++ }) #{ instance.get('hostname') } (#{ instance.get('uuid') })")
 
-                prompt.get(['number'], (err, result) ->
+                prompt.get(number_schema, (err, result) ->
                     def.resolve(instances[result.number])
                 )
             else
@@ -38,7 +47,7 @@ class @Handler
                 for image in images
                     console.log("#{ i++ }) #{ image.get('name') } (#{ image.get('uuid') })")
 
-                prompt.get(['number'], (err, result) ->
+                prompt.get(number_schema, (err, result) ->
                     def.resolve(images[result.number])
                 )
             else
@@ -60,7 +69,7 @@ class @Handler
                 for network in networks
                     console.log("#{ i++ }) #{ network.get('domainname') } (#{ network.get('uuid') })")
 
-                prompt.get(['number'], (err, result) ->
+                prompt.get(number_schema, (err, result) ->
                     def.resolve(networks[result.number])
                 )
             else
