@@ -67,7 +67,7 @@ class @CmdHandler extends Handler
         conn = new Computing(key, secret)
         conn.list_instances().done((instances) ->
             for instance in instances
-                console.log(instance.short())
+                console.log(instance.short_info())
         )
 
     @std_wait_until_done: (instance) ->
