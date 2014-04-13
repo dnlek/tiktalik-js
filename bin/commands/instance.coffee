@@ -81,7 +81,7 @@ class @CmdHandler extends Handler
 
     @info: (key, secret, args) ->
         @get_instance(key, secret, args.query).done((instance) ->
-            console.log(JSON.stringify(instance.data, null, 4))
+            process.stdout.write(instance.full_info())
         )
 
     @instance_operation: (key, secret, operation_name, func, args) ->
