@@ -16,6 +16,12 @@ class @Instance
     is_waiting: () ->
         return @data.actions_pending_count > 0
 
+    status_str: () ->
+        if @is_running()
+            return 'running'.green
+        else
+            return 'stoped'
+
     ips: () ->
         ret = []
         for iface in @data.interfaces
