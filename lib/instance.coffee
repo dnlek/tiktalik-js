@@ -29,10 +29,10 @@ class @Instance
 
         return ret
 
-    short: () ->
+    short_info: () ->
         return "#{ @data.hostname } (ip: #{ @ips().join(', ') }, running: #{ @is_running() }, uuid: #{ @data.uuid })"
 
-    full: () ->
+    full_info: () ->
         str = "\n"
         str += "Hostname:         #{ @data.hostname }\n"
         str += "UUID:             #{ @data.uuid }\n"
