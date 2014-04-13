@@ -58,6 +58,10 @@ class @Instance
         ### Creates instance backup ###
         @connection.request('POST', "/instance/#{ @data.uuid }/backup")
 
+    destroy: () ->
+        ### Destroys instance ###
+        @connection.request('DELETE', "/instance/#{ @data.uuid }")
+
     restart: () ->
         def = deferred()
 
