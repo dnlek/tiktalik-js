@@ -32,6 +32,16 @@ class @Instance
     short: () ->
         return "#{ @data.hostname } (ip: #{ @ips().join(', ') }, running: #{ @is_running() }, uuid: #{ @data.uuid })"
 
+    full: () ->
+        str = "\n"
+        str += "Hostname:         #{ @data.hostname }\n"
+        str += "UUID:             #{ @data.uuid }\n"
+        str += "Status:           #{ @status_str() }\n"
+        str += "IPs:              #{ @ips().join(', ') }\n"
+        str += "Image UUID:       #{ @data.image_uuid }\n"
+        str += "Size ID:          #{ @data.size }\n"
+        return str
+
     stop: () ->
         ### Stops instance (using acpi) ###
         @connection.request('POST', "/instance/#{ @data.uuid }/stop")
