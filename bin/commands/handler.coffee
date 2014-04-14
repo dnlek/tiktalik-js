@@ -26,7 +26,8 @@ class @Handler
                     console.log("#{ i++ }) #{ instance.get('hostname') } (#{ instance.get('uuid') })")
 
                 prompt.get(number_schema, (err, result) ->
-                    def.resolve(instances[result.number])
+                    if not err
+                        def.resolve(instances[result.number])
                 )
             else
                 console.log("Instance not found")
@@ -48,7 +49,8 @@ class @Handler
                     console.log("#{ i++ }) #{ image.get('name') } (#{ image.get('uuid') })")
 
                 prompt.get(number_schema, (err, result) ->
-                    def.resolve(images[result.number])
+                    if not err
+                        def.resolve(images[result.number])
                 )
             else
                 console.log("Image not found")
@@ -70,7 +72,8 @@ class @Handler
                     console.log("#{ i++ }) #{ network.get('domainname') } (#{ network.get('uuid') })")
 
                 prompt.get(number_schema, (err, result) ->
-                    def.resolve(networks[result.number])
+                    if not err
+                        def.resolve(networks[result.number])
                 )
             else
                 console.log("Network not found")
