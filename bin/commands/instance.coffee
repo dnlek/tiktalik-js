@@ -47,6 +47,12 @@ class @CmdHandler extends Handler
             action: 'storeTrue'
         })
 
+        destroy_instance = inst_subparsers.addParser('destroy', {addHelp: true})
+        destroy_instance.addArgument(['query'])
+        destroy_instance.addArgument(['-w', '--wait'], {
+            action: 'storeTrue'
+        })
+
         create_instance = inst_subparsers.addParser('create', {addHelp: true})
         create_instance.addArgument(['hostname'])
         create_instance.addArgument(['-s', '--size'], {
@@ -110,6 +116,31 @@ class @CmdHandler extends Handler
 
     @backup: (key, secret, args) ->
         @instance_operation(key, secret, 'Backup', 'backup', args)
+
+    @destroy: (key, secret, args) ->
+        yesno_schema = {
+            properties: {
+                yesno: {
+                    message: 'Warning! Potentially destructive action. Please confirm [y/n]',
+                    required: true
+                }
+            }
+        }
+        @get_instance(key, secret, args.query).done((instance) =>
+            prompt.get(yesno_schema, (err, result) =>
+                if err || result.yesno.toLowerCase() not in ['y', 'yes']
+                    return
+
+                process.stdout.write("Operation Destroy in progress.")
+                process.stdout.write(".")
+                instance.destroy().done(() =>
+                    if args.wait
+                        @std_wait_until_done(instance)
+                    else
+                        process.stdout.write("done (operation enqueued)\n")
+                )
+            )
+        )
 
     @create: (key, secret, args) ->
         conn = new Computing(key, secret)
