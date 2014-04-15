@@ -38,7 +38,7 @@ class @Instance
         str += "UUID:             #{ @data.uuid }\n"
         str += "Status:           #{ @status_str() }\n"
         str += "IPs:              #{ @ips().join(', ') }\n"
-        str += "Image UUID:       #{ @data.image_uuid }\n"
+        str += "Image UUID:       #{ @data.vpsimage_uuid }\n"
         str += "Size ID:          #{ @data.size }\n"
         return str
 
