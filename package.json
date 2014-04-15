@@ -1,6 +1,8 @@
 {
   "name": "tiktalik-js",
-  "bin": "./bin/tiktalik-cli.coffee",
+  "bin": {
+    "tiktalikjs": "./bin/tiktalik-cli.coffee"
+  },
   "version": "0.0.1",
   "devDependencies": {
     "grunt": "^0.4.3",
