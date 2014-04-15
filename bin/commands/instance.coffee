@@ -2,6 +2,7 @@
 {Handler} = require('./handler')
 prompt = require('prompt')
 deferred = require('deferred')
+kexec = require('kexec');
 
 class @CmdHandler extends Handler
 
@@ -52,6 +53,10 @@ class @CmdHandler extends Handler
         destroy_instance.addArgument(['-w', '--wait'], {
             action: 'storeTrue'
         })
+
+        ssh_instance = inst_subparsers.addParser('ssh', {addHelp: true})
+        ssh_instance.addArgument(['query'])
+        ssh_instance.addArgument(['--ssh_key'])
 
         create_instance = inst_subparsers.addParser('create', {addHelp: true})
         create_instance.addArgument(['hostname'])
@@ -140,6 +145,22 @@ class @CmdHandler extends Handler
                         process.stdout.write("done (operation enqueued)\n")
                 )
             )
+        )
+
+    @ssh: (key, secret, args) ->
+        @get_instance(key, secret, args.query).done((instance) =>
+            console.log("Executing SSH into #{ instance.get('hostname') } instance...")
+            params = []
+            params.push '-tt'
+            params.push ['-o', 'IdentitiesOnly=yes']...
+            params.push ['-o', 'LogLevel=ERROR']...
+            params.push ['-o', 'StrictHostKeyChecking=no']...
+            params.push ['-o', 'UserKnownHostsFile=/dev/null']...
+            params.push ['-i', args.ssh_key]...
+            params.push ['-l', 'root']...
+            params.push instance.ips()[0]
+
+            kexec('ssh', params)
         )
 
     @create: (key, secret, args) ->
