@@ -3,7 +3,7 @@
   "bin": {
     "tiktalikjs": "./bin/tiktalik-cli.coffee"
   },
-  "version": "0.0.2",
+  "version": "0.0.3",
   "devDependencies": {
     "grunt": "^0.4.3",
     "grunt-contrib-jshint": "^0.8.0",
