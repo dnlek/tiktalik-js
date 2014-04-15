@@ -2,7 +2,7 @@
 {Handler} = require('./handler')
 prompt = require('prompt')
 deferred = require('deferred')
-spawn = require('child_process').spawn
+kexec = require('kexec');
 
 class @CmdHandler extends Handler
 
@@ -149,11 +149,18 @@ class @CmdHandler extends Handler
 
     @ssh: (key, secret, args) ->
         @get_instance(key, secret, args.query).done((instance) =>
+            console.log("Executing SSH into #{ instance.get('hostname') } instance...")
             params = []
-            params.push('-tt')
-            params.push('-l root')
-            params.push(instance.ips()[0])
-            ssh = spawn('ssh', params)
+            params.push '-tt'
+            params.push ['-o', 'IdentitiesOnly=yes']...
+            params.push ['-o', 'LogLevel=ERROR']...
+            params.push ['-o', 'StrictHostKeyChecking=no']...
+            params.push ['-o', 'UserKnownHostsFile=/dev/null']...
+            params.push ['-i', args.ssh_key]...
+            params.push ['-l', 'root']...
+            params.push instance.ips()[0]
+
+            kexec('ssh', params)
         )
 
     @create: (key, secret, args) ->
