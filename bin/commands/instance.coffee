@@ -2,6 +2,7 @@
 {Handler} = require('./handler')
 prompt = require('prompt')
 deferred = require('deferred')
+spawn = require('child_process').spawn
 
 class @CmdHandler extends Handler
 
@@ -52,6 +53,10 @@ class @CmdHandler extends Handler
         destroy_instance.addArgument(['-w', '--wait'], {
             action: 'storeTrue'
         })
+
+        ssh_instance = inst_subparsers.addParser('ssh', {addHelp: true})
+        ssh_instance.addArgument(['query'])
+        ssh_instance.addArgument(['--ssh_key'])
 
         create_instance = inst_subparsers.addParser('create', {addHelp: true})
         create_instance.addArgument(['hostname'])
@@ -140,6 +145,15 @@ class @CmdHandler extends Handler
                         process.stdout.write("done (operation enqueued)\n")
                 )
             )
+        )
+
+    @ssh: (key, secret, args) ->
+        @get_instance(key, secret, args.query).done((instance) =>
+            params = []
+            params.push('-tt')
+            params.push('-l root')
+            params.push(instance.ips()[0])
+            ssh = spawn('ssh', params)
         )
 
     @create: (key, secret, args) ->
