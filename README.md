@@ -81,6 +81,12 @@ Each asynchronous Tiktalik JS command has (-w, --wait) parameter. It indicates t
     playground1 (ip: 37.233.98.124, running: true, uuid: 5ae43c8d-1b44-460c-9b28-a8aebfb4ea26)
     test-api (ip: 37.233.98.125, running: false, uuid: 480a37d7-ca06-4feb-883e-23ce0fefc4e7)
 
+### SSH into Tiktalik Instance
+
+    $ tiktalikjs instance ssh --ssh_key ~/.ssh/id_dsa.pub test-api
+    Executing SSH into test-api instance...
+    [root@test-api ~]
+
 ### Info about Tiktalik Instance
 
     $ tiktalikjs instance info dnlek-test1
