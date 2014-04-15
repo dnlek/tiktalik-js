@@ -13,7 +13,7 @@ Feel free to create issues and/or merge requests.
 ## Configuration
 
 Application requires API Key and API Secret to access user account.
-API keys can be generated in [Tiktalik Panel](http://tiktalik/panel) in section "API Keys".
+API keys can be generated in [Tiktalik Panel](http://tiktalik.com/panel) in section "API Keys".
 
 Currently configuration can be set as environment variables:
 
