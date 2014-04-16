@@ -31,7 +31,8 @@
     "underscore": "^1.6.0",
     "colors": "^0.6.2",
     "argparse": "^0.1.15",
-    "kexec": "^0.2.0"
+    "kexec": "^0.2.0",
+    "yamljs": "^0.1.4"
   },
   "repository": {
     "type": "git",
