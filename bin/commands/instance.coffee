@@ -7,58 +7,58 @@ kexec = require('kexec');
 class @CmdHandler extends Handler
 
     @get_parsers: (subparsers) ->
-        instance = subparsers.addParser('instance', {addHelp: true})
+        instance = subparsers.addParser('instance', {addHelp: true, help: 'Perform Tiktalik Instance operations'})
 
         inst_subparsers = instance.addSubparsers({
             title: 'Tiktalik Instance functions',
             dest: 'subgroup'
         })
-        list_instance = inst_subparsers.addParser('list', {addHelp: true})
+        list_instance = inst_subparsers.addParser('list', {addHelp: true, help: 'List all user Instances'})
 
         get_instance = inst_subparsers.addParser('info', {addHelp: true})
         get_instance.addArgument(['query'])
 
-        stop_instance = inst_subparsers.addParser('stop', {addHelp: true})
+        stop_instance = inst_subparsers.addParser('stop', {addHelp: true, help: 'Stop running Instance'})
         stop_instance.addArgument(['query'])
         stop_instance.addArgument(['-w', '--wait'], {
             action: 'storeTrue'
         })
 
-        start_instance = inst_subparsers.addParser('start', {addHelp: true})
+        start_instance = inst_subparsers.addParser('start', {addHelp: true, help: 'Start Instance'})
         start_instance.addArgument(['query'])
         start_instance.addArgument(['-w', '--wait'], {
             action: 'storeTrue'
         })
 
-        forcestop_instance = inst_subparsers.addParser('forcestop', {addHelp: true})
-        forcestop_instance.addArgument(['query'])
-        forcestop_instance.addArgument(['-w', '--wait'], {
+        shutdown_instance = inst_subparsers.addParser('shutdown', {addHelp: true, help: 'Shut down Instance immediately'})
+        shutdown_instance.addArgument(['query'])
+        shutdown_instance.addArgument(['-w', '--wait'], {
             action: 'storeTrue'
         })
 
-        restart_instance = inst_subparsers.addParser('restart', {addHelp: true})
+        restart_instance = inst_subparsers.addParser('restart', {addHelp: true, help: 'Restart Instance'})
         restart_instance.addArgument(['query'])
         restart_instance.addArgument(['-w', '--wait'], {
             action: 'storeTrue'
         })
 
-        backup_instance = inst_subparsers.addParser('backup', {addHelp: true})
+        backup_instance = inst_subparsers.addParser('backup', {addHelp: true, help: 'Create Instance backup'})
         backup_instance.addArgument(['query'])
         backup_instance.addArgument(['-w', '--wait'], {
             action: 'storeTrue'
         })
 
-        destroy_instance = inst_subparsers.addParser('destroy', {addHelp: true})
+        destroy_instance = inst_subparsers.addParser('destroy', {addHelp: true, help: 'Destroy instance'})
         destroy_instance.addArgument(['query'])
         destroy_instance.addArgument(['-w', '--wait'], {
             action: 'storeTrue'
         })
 
-        ssh_instance = inst_subparsers.addParser('ssh', {addHelp: true})
+        ssh_instance = inst_subparsers.addParser('ssh', {addHelp: true, help: 'SSH into Instance'})
         ssh_instance.addArgument(['query'])
         ssh_instance.addArgument(['--ssh_key'])
 
-        create_instance = inst_subparsers.addParser('create', {addHelp: true})
+        create_instance = inst_subparsers.addParser('create', {addHelp: true, help: 'Create new Instance'})
         create_instance.addArgument(['hostname'])
         create_instance.addArgument(['-s', '--size'], {
             nargs: 1
@@ -110,7 +110,7 @@ class @CmdHandler extends Handler
     @stop: (key, secret, args) ->
         @instance_operation(key, secret, 'Stop', 'stop', args)
 
-    @forcestop: (key, secret, args) ->
+    @shutdown: (key, secret, args) ->
         @instance_operation(key, secret, 'Force Stop', 'force_stop', args)
 
     @start: (key, secret, args) ->
