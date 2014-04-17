@@ -3,15 +3,15 @@
 class @CmdHandler
 
     @get_parsers: (subparsers) ->
-        network = subparsers.addParser('network', {addHelp: true})
+        network = subparsers.addParser('network', {addHelp: true, help: 'Perform Tiktalik Network operations'})
 
         subparsers = network.addSubparsers({
             title: 'Tiktalik Netowk functions',
             dest: 'subgroup'
         })
-        list_network = subparsers.addParser('list', {addHelp: true})
+        list_network = subparsers.addParser('list', {addHelp: true, help: 'List available networks'})
 
-        get_network = subparsers.addParser('get', {addHelp: true})
+        get_network = subparsers.addParser('get', {addHelp: true, help: 'Get network details'})
         get_network.addArgument(['uuid'])
 
     @list: (key, secret, args) ->

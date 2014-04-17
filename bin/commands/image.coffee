@@ -6,15 +6,15 @@ deferred = require('deferred')
 class @CmdHandler extends Handler
 
     @get_parsers: (subparsers) ->
-        image = subparsers.addParser('image', {addHelp: true})
+        image = subparsers.addParser('image', {addHelp: true, help: 'Perform Tiktalik Image operations'})
 
         subparsers = image.addSubparsers({
             title: 'Tiktalik Instance functions',
             dest: 'subgroup'
         })
-        list_image = subparsers.addParser('list', {addHelp: true})
+        list_image = subparsers.addParser('list', {addHelp: true, help: 'List available images'})
 
-        get_image = subparsers.addParser('info', {addHelp: true})
+        get_image = subparsers.addParser('info', {addHelp: true, help: 'Get image details'})
         get_image.addArgument(['query'])
 
     @list: (key, secret, args) ->
