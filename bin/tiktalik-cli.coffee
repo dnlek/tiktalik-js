@@ -11,7 +11,7 @@ prompt.start()
 
 parser = new ArgumentParser({
   version: '0.0.1',
-  addHelp:true,  
+  addHelp:true,
   description: 'Tiktalik CLI',
 })
 
@@ -40,7 +40,7 @@ subparsers = parser.addSubparsers({
 # dirs = fs.readdirSync('./commands')
 # console.log('dirs', dirs)
 
-cmds = ['instance', 'image', 'network']
+cmds = ['instance', 'image', 'network', 'config']
 commands = {}
 
 for cmd in cmds
