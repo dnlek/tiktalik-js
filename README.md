@@ -135,8 +135,17 @@ Each asynchronous Tiktalik JS command has (-w, --wait) parameter. It indicates t
 
 ## TODO
 
- [x] SSH into selected instance
- [ ] Better operations progress
- [ ] Images operations
- [ ] Networks operations
- [ ] Loadbalancers operations
+ - [x] SSH into selected instance
+ - [x] Config file
+  - [x] Read config from yaml file
+  - [x] Initialize yaml config file
+ - [ ] Extended Config file
+  - [ ] Store more defaults in config file (eg. SSH key path)
+ - [ ] Better operations progress
+ - [x] Images operations
+  - [x] List images
+  - [x] Delete image
+ - [x] Networks operations
+  - [x] List networks
+  - [x] Get network
+ - [ ] Loadbalancers operations
