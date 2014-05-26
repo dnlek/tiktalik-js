@@ -42,7 +42,7 @@ For example:
 
 ### Fuzzy name (availabe for instance, image, network etc.)
 
-When more then one result was found.    
+When more then one result was found.
 
     $ tiktalikjs instance info test
     Found more then one instance (3)
@@ -101,7 +101,7 @@ Each asynchronous Tiktalik JS command has (-w, --wait) parameter. It indicates t
 ### Start Tiktalik Instance
 
     $ tiktalikjs instance start --wait test-api
-    Operation Start in progress..................done    
+    Operation Start in progress..................done
 
 ### Shutdown Tiktalik Instance
 
@@ -114,8 +114,8 @@ Each asynchronous Tiktalik JS command has (-w, --wait) parameter. It indicates t
 
     Forces instance shutdown.
 
-    $ tiktalikjs instance forcestop --wait test-api
-    Operation Force Stop in progress.................done
+    $ tiktalikjs instance shutdown --wait test-api
+    Operation Shut Down in progress.................done
 
 ### Restart Tiktalik Instance
 
@@ -135,8 +135,8 @@ Each asynchronous Tiktalik JS command has (-w, --wait) parameter. It indicates t
 
 ## TODO
 
- * SSH into selected instance
- * Better operations progress
- * Images operations
- * Networks operations
- * Loadbalancers operations
+ [x] SSH into selected instance
+ [ ] Better operations progress
+ [ ] Images operations
+ [ ] Networks operations
+ [ ] Loadbalancers operations

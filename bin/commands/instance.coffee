@@ -2,7 +2,7 @@
 {Handler} = require('./handler')
 prompt = require('prompt')
 deferred = require('deferred')
-kexec = require('kexec');
+kexec = require('kexec')
 
 class @CmdHandler extends Handler
 
@@ -73,7 +73,7 @@ class @CmdHandler extends Handler
         create_instance.addArgument(['-w', '--wait'], {
             action: 'storeTrue'
         })
-    
+
     @list: (key, secret, args) ->
         conn = new Computing(key, secret)
         conn.list_instances().done((instances) ->
