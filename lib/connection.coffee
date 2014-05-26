@@ -47,11 +47,13 @@ class @Connection
         def = deferred()
         resp = []
 
-        @request(method, path).done((response) => 
+        @request(method, path).done((response) =>
             for obj_data in response.body
                 resp.push(new Cls(obj_data, this))
 
             def.resolve(resp)
+        , (err) ->
+          def.reject(err)
         )
 
         return def.promise
@@ -62,9 +64,11 @@ class @Connection
         def = deferred()
         self = this
 
-        @request(method, "#{ path }/#{ uuid }").done((response) => 
+        @request(method, "#{ path }/#{ uuid }").done((response) =>
             resp = new Cls(response.body, this)
             def.resolve(resp)
+        , (err) ->
+            def.reject(err)
         )
 
         return def.promise
