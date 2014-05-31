@@ -22,7 +22,8 @@ class @CmdHandler
     yesno_schema = {
       properties: {
         yesno: {
-          message: 'Config file already exists, do you want to overwrite it? Please confirm [y/n]',
+          message: 'Config file already exists, do you want to overwrite it?
+                    Please confirm [y/n]',
           required: true
         }
       }
