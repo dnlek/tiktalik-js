@@ -149,3 +149,4 @@ Each asynchronous Tiktalik JS command has (-w, --wait) parameter. It indicates t
   - [x] List networks
   - [x] Get network
  - [ ] Loadbalancers operations
+ - [ ] Library unit tests
