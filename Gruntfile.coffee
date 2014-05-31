@@ -17,9 +17,9 @@ module.exports = (grunt) ->
         ext: '.js'
         # 'dist/tiktalik.js': ['lib/*.coffee']
     watch:
-        coffeescript:
-            files: 'lib/**/*.coffee'
-            tasks: ["newer:coffee"]
+      coffeescript:
+        files: 'lib/**/*.coffee'
+        tasks: ["newer:coffee"]
 
     clean: ['node_modules', 'dist']
 
