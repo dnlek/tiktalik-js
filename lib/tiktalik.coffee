@@ -1,7 +1,6 @@
-'use strict';
+'use strict'
 
 {Computing} = require('./computing')
 
 module.exports =
-    Computing: Computing
-    
+  Computing: Computing

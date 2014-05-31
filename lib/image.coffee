@@ -1,10 +1,10 @@
 
 class @Image
-    ### Tiktalik image
-        
-    ###
+  ### Tiktalik image
 
-    constructor: (@data, @connection) ->
+  ###
 
-    get: (name) ->
-        return @data[name]
+  constructor: (@data, @connection) ->
+
+  get: (name) ->
+    return @data[name]
